@@ -1,0 +1,188 @@
+<!-- Add Medicine -->
+<div style="float: right;">
+    <p-button label="Add Medicines" icon="pi pi-plus" (click)="showDialogForAddMedicine()"></p-button>
+</div>
+<div class="mt-5 mb-4">
+    <h2 class="mb-3">Medicines Inventory</h2>
+    <p-table class="inventoryTable" #dt2 [value]="medicineData?.tableData" [tableStyle]="{'min-width': '110rem'}"
+        dataKey="id" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading"
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [responsive]="true" [globalFilterFields]="columnCodes" [resizableColumns]="true"
+        styleClass="p-datatable-gridlines" columnResizeMode="expand" [scrollable]="true" scrollHeight="550px">
+        <ng-template pTemplate="caption">
+            <!-- <div class="flex">
+                  <span class="p-input-icon-left ml-auto">
+                      <i class="pi pi-search"></i>
+                      <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                  </span>
+              </div> -->
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th *ngFor="let col of medicineData?.columnHeaders" pResizableColumn >
+                    {{ col.columnName }}
+                </th>
+            </tr>
+            <tr>
+                <ng-container *ngFor="let cols of columnCodes">
+                    <th class="Coloumnfilter" *ngIf="cols !== 'edit' && cols !== 'delete'">
+                        <p-columnFilter type="text" [field]="cols">
+                        </p-columnFilter>
+                    </th>
+                    <th *ngIf="cols === 'edit' || cols === 'delete'"></th>
+                </ng-container>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-medicines>
+            <tr>
+                <td style="width: 300px;" >
+                    {{ medicines?.name }}
+                </td>
+                <td style="width: 300px;">
+                    {{ medicines?.manufacturer }}
+                </td>
+                <td>
+                    {{ medicines?.stripQuantity }}
+                </td>
+                <td>
+                    {{ medicines?.perStripTabletQty }}
+                </td>
+                <td>
+                    <!-- <p-tag [value]="medicines.status" [severity]="getSeverity(medicines.status)"></p-tag> -->
+                    <ng-container *ngIf="medicines?.stripQuantity > 0">
+                        <p-tag severity="success" [value]="'In Stock'"></p-tag>
+                    </ng-container>
+                    <ng-container *ngIf="medicines?.stripQuantity === 0">
+                        <p-tag severity="danger" [value]="'Out Of Stock'"></p-tag>
+                    </ng-container>
+                </td>
+                <td style="width: 50px;">
+                    {{ medicines?.prescribeRequired || '' }}
+                </td>
+                <td>
+                    {{ medicines?.price }}
+                </td>
+                <td style="width: 50px;">
+                    <!-- Set a smaller width for Edit column -->
+                    <!-- Edit Column -->
+                    <button style="padding: 0.75rem 1.25rem; margin: 6px;" pButton type="button" icon="pi pi-pencil"
+                        (click)="editMedicines(medicines)" class="edit-button p-button-success"></button>
+                </td>
+                <td style="width: 50px;">
+                    <!-- Set a smaller width for Delete column -->
+                    <!-- Delete Column -->
+                    <button style="padding: 0.75rem 1.25rem; margin: 6px;" pButton type="button" icon="pi pi-trash"
+                        (click)="deleteMedicines(medicines._id)" class="delete-button p-button-danger"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="5">No Medicines Found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+
+<p-dialog header="Header" [(visible)]="addMedicinePopupVisible" [modal]="true" [breakpoints]="{ '960px': '95vw' }"
+    [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <h4>Add Medicine</h4>
+    </ng-template>
+    <form [formGroup]="medicineForm">
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input id="name" type="text" class="form-control" formControlName="name" />
+                    <div *ngIf="medicineForm.get('name')?.hasError('required')" class="text-danger">
+                        Name is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <label for="manufacturer" class="form-label">Manufacturer</label>
+                    <input id="manufacturer" type="text" class="form-control" formControlName="manufacturer" />
+                    <div *ngIf="medicineForm.get('manufacturer')?.hasError('required')" class="text-danger">
+                        Manufacturer is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="stock" class="form-label">Stock</label>
+                            <div>
+                                <p-dropdown formControlName="stock" [options]="stockOptions" optionLabel="label" optionValue="value"
+                                    placeholder="Select Stock"></p-dropdown>
+                            </div>
+                            <div *ngIf="medicineForm.get('stock')?.hasError('required')" class="text-danger">
+                                Stock is required.
+                            </div>
+                        </div>
+                    </div> -->
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="qty" class="form-label">Prescribe Required</label>
+                    <div>
+                        <p-dropdown formControlName="isPrescribeRequired" [options]="toggleSwitchForPrescribe"
+                            optionLabel="label" optionValue="value" placeholder="Select"></p-dropdown>
+                    </div>
+                    <div *ngIf="medicineForm.get('isPrescribeRequired')?.hasError('required')" class="text-danger">
+                        Prescribe is Required.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="qty" class="form-label">Strip Quantity</label>
+                    <input id="qty" type="number" class="form-control" formControlName="stripQuantity" />
+                    <div *ngIf="medicineForm.get('stripQuantity')?.hasError('required')" class="text-danger">
+                        Quantity is required.
+                    </div>
+                    <div *ngIf="medicineForm.get('stripQuantity')?.hasError('min')" class="text-danger">
+                        Quantity must be greater than or equal to 0.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="qty" class="form-label">Per Strip Tablet Quantity</label>
+                    <input id="qty" type="number" class="form-control" formControlName="perStripTabletQty" />
+                    <div *ngIf="medicineForm.get('perStripTabletQty')?.hasError('required')" class="text-danger">
+                        Quantity is required.
+                    </div>
+                    <div *ngIf="medicineForm.get('perStripTabletQty')?.hasError('min')" class="text-danger">
+                        Quantity must be greater than or equal to 0.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price Per Strip</label>
+                    <input id="price" type="text" class="form-control" formControlName="price" />
+                    <div *ngIf="medicineForm.get('price')?.hasError('required')" class="text-danger">
+                        price is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <ng-template pTemplate="footer">
+        <button class="btn btn-secondry" (click)="onCancelMedicineDailog()">Cancel</button>
+        <button class="btn btn-primary" *ngIf="!isEdit" (click)="onSubmit()"
+            [disabled]="!medicineForm.valid">Create</button>
+        <button class="btn btn-primary" *ngIf="isEdit" (click)="updateMedicine()"
+            [disabled]="!medicineForm.valid">Update</button>
+    </ng-template>
+
+</p-dialog>
+
+<p-toast position="bottom-center" key="bc"></p-toast>

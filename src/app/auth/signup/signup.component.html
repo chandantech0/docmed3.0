@@ -1,0 +1,189 @@
+<section class="gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card" style="border-radius: 1rem;">
+          <div class="card-body p-5" *ngIf="!signUpOtpWindow">
+            <form [formGroup]="signUpForm">
+              <div class="mb-md-5 mt-md-4">
+                <h2 class="fw-bold mb-2 text-uppercase ">SignUp</h2>
+                <!-- <p class=" mb-5">Please enter your login and password!</p> -->
+                <div class="p-fluid grid">
+                  <div class="row mt-4">
+                    <div class="col-6 col-md-6 col-lg-6 col-xl-6">
+                      <div class="flex align-items-center">
+                        <p-radioButton (click)="userTypeData('user')" value="user" formControlName="userType"
+                          inputId="user">
+                        </p-radioButton>
+                        <label for="user" class="ml-2 radio-title font-14">User</label>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-6 col-xl-6">
+                      <div class="flex align-items-center">
+                        <p-radioButton (click)="userTypeData('chemist')" value="chemist" formControlName="userType"
+                          inputId="chemist">
+                        </p-radioButton>
+                        <label for="chemist" class="ml-2 radio-title font-14">Chemist</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mt-3" *ngIf="signUpForm.get('userType')?.value === 'user'">
+                    <div class="col-6 col-md-6 col-lg-6 col-xl-6">
+                      <div class="flex align-items-center">
+                        <p-radioButton value="simple_user" formControlName="userTypeSub" inputId="simple_user">
+                        </p-radioButton>
+                        <label for="simple_user" class="ml-2 radio-title font-14">Simple User</label>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-6 col-xl-6">
+                      <div class="flex align-items-center">
+                        <p-radioButton value="doctor" formControlName="userTypeSub" inputId="doctor">
+                        </p-radioButton>
+                        <label for="doctor" class="ml-2 radio-title font-14">Doctor</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="field mt-5 mb-4">
+                    <span class="p-float-label">
+                      <input type="text" id="inputtext" pInputText formControlName="email" (input)="validateEmail($event)">
+                      <label for="inputtext">Email Id</label>
+                    </span>
+                    <div *ngIf="validationErrorForEmail" class="error-message f-12">{{ validationErrorForEmail }}</div>
+                  </div>
+                  <div class="field mb-4 mt-2">
+                    <span class="p-float-label">
+                      <input type="text" id="inputtext" pInputText formControlName="name">
+                      <label
+                        for="inputtext">{{signUpForm.get('userType')?.value === 'chemist' ? 'Chemist Owner Name' : 'Full Name'}}</label>
+                    </span>
+                  </div>
+                  <div class="field mb-4 mt-2">
+                    <span class="p-float-label">
+                      <p-password formControlName="password"></p-password>
+                      <label for="inputtext">Password</label>
+                    </span>
+                  </div>
+
+                  <div class="field mb-4 mt-2">
+                    <span class="p-float-label">
+                      <!-- [toggleMask]="true" -->
+                      <p-password formControlName="confirmPassword"></p-password>
+                      <label for="inputtext">Confirm Password</label>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="field mb-4 mt-2">
+                  <span class="p-float-label">
+                    <input type="number" id="phone" pInputText formControlName="phone" (input)="onMobileNumberInput($event)" >
+                    <label for="phone">Phone</label>
+                  </span>
+                  <div *ngIf="validationError" class="error-message f-12">{{ validationError }}</div>
+                </div>
+                <ng-container *ngIf="signUpForm.get('userType')?.value === 'chemist'">
+
+
+                  <div class="field mb-4 mt-2">
+                    <span class="p-float-label">
+                      <input type="text" id="chemistName" pInputText formControlName="chemistName">
+                      <label for="chemistName">Chemist Name</label>
+                    </span>
+                  </div>
+
+                  <div class="field mb-4 mt-2">
+                    <span class="p-float-label">
+                      <input type="number" id="pinCodeInput" pInputText formControlName="pinCode"
+                        (input)="checkPinCode()">
+                      <label for="pinCodeInput">Pin Code</label>
+                    </span>
+                  </div>
+
+                  <div class="field mb-4 mt-2">
+                    <span class="p-float-label">
+                      <input type="text" id="area" pInputText formControlName="area">
+                      <label for="area">Area</label>
+                    </span>
+                  </div>
+
+                  <div class="field mb-4 mt-2">
+                    <span class="p-float-label">
+                      <input type="text" id="city" pInputText formControlName="city">
+                      <label for="city">City</label>
+                    </span>
+                  </div>
+
+                  <div class="field mb-4 mt-2">
+                    <span class="p-float-label">
+                      <input type="text" id="address" pInputText formControlName="Address">
+                      <label for="address">Complete Address</label>
+                    </span>
+                  </div>
+
+                  <div class="field mb-4 mt-2">
+                    <span class="p-float-label">
+                      <input type="text" id="LicenseNumber" pInputText formControlName="LicenseNumber">
+                      <label for="LicenseNumber">License Number</label>
+                    </span>
+                  </div>
+
+                  <div class="field mb-4 mt-2">
+                    <span class="p-float-label">
+                      <p-calendar formControlName="RegistrationDate"></p-calendar>
+                      <label for="RegistrationDate">Registration Date</label>
+                    </span>
+                  </div>
+                </ng-container>
+
+
+
+
+                <!-- <p class="small mb-5 pb-lg-2"><a class="" href="#!">Forgot password?</a></p> -->
+                <div class="text-center">
+
+                  <button pButton type="button" pRipple label="Sign Up" [disabled]="!signUpForm.valid || validationError || validationErrorForEmail"
+                    (click)="signUp()"></button>
+                </div>
+                <!-- <button pButton type="button" pRipple label="Login" [routerLink]="['/doctor/chemist']"></button> -->
+              </div>
+            </form>
+
+            <div>
+              <p class="mb-0 mt-2">Remember Password <a [routerLink]="['/login']" class="fw-bold">LogIn</a></p>
+            </div>
+          </div>
+          <div class="card-body p-5" *ngIf="signUpOtpWindow">
+            <div class="row mt-4">
+              <div class="container-otp mt-5">
+                <h2 class="text-center mb-4">Enter OTP</h2>
+                <form>
+                  <div class="mb-3 d-flex justify-content-center">
+                    <!-- <input
+                    *ngFor="let digit of otp; let i = index"
+                    [id]="'otpInput' + i"
+                    type="text"
+                    class="form-control text-center"
+                    [(ngModel)]="otp[i]"
+                    [ngModelOptions]="{ standalone: true }"
+                    maxlength="1"
+                    pattern="[0-9]"
+                    required
+                    (input)="updateValue(i)"
+                    (keydown)="moveFocus($event, i)"
+                  />                 -->
+                    <input type="text" class="form-control text-center" [(ngModel)]="otp" maxlength="6"
+                      [ngModelOptions]="{standalone: true}" required
+                      onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                  </div>
+                  <button type="submit" class="btn btn-primary btn-block" [disabled]="otp.length !== 6"
+                    (click)="submitOtp()">Submit</button>
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<p-toast position="bottom-center" key="bc"></p-toast>

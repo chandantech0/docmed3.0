@@ -1,0 +1,135 @@
+<div class="table-top-button">
+    <p-button label="Refresh" icon="pi pi-refresh" (click)="refresh()"></p-button>
+</div>
+<div class="mt-5 mb-4">
+    <h2 class="mb-3">Orders Placed</h2>
+    <p-table class="inventoryTable" #dt2 [value]="allOrdersData?.tableData" dataKey="id" [rows]="10"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [loading]="loading" [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [responsive]="true"
+        [globalFilterFields]="columnCodes" [resizableColumns]="true" styleClass="p-datatable-gridlines"
+        columnResizeMode="expand" [scrollable]="true" scrollHeight="550px">
+        <ng-template pTemplate="caption">
+            <!-- <div class="flex">
+                  <span class="p-input-icon-left ml-auto">
+                      <i class="pi pi-search"></i>
+                      <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                  </span>
+              </div> -->
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th *ngFor="let col of allOrdersData?.columnHeaders" pResizableColumn>
+                    {{ col.columnName }}
+                </th>
+            </tr>
+            <tr>
+                <ng-container *ngFor="let cols of columnCodes">
+                    <th class="Coloumnfilter" *ngIf="cols !== 'action' && cols !== 'placedDate'">
+                        <p-columnFilter type="text" [field]="cols">
+                        </p-columnFilter>
+                    </th>
+                    <th *ngIf="cols === 'action'">
+                    </th>
+                    <th *ngIf="cols === 'placedDate'">
+                        <p-columnFilter type="date" [field]="cols" display="menu">
+                        </p-columnFilter>
+                    </th>
+                </ng-container>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-order>
+            <tr [ngClass]="{'highlight-row': order.orderStatus === 'Not Accept'}">
+                <td style="width: 500px;">
+                    {{ order?.orderId }}
+                </td>
+                <td style="width: 500px;">
+                    {{ order?.customerName || 'User' }}
+                </td>
+                <td>
+                    {{ order?.placedDate | date: 'dd/MM/yyyy HH:MM'}}
+                </td>
+                <td>
+                    {{ order?.orderStatus }}
+                </td>
+                <td style="width: 50px;">
+                    <button style="padding: 0.75rem 1.25rem; margin: 6px;" pButton type="button" icon="pi pi-pencil"
+                        (click)="expandOrderDetailsPopup(order.orderId)" class="edit-button p-button-success"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="5">No Orders Placed Found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<!-- <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="list-group-item" *ngFor="let top of allOrdersData">
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1">Order - {{top?._id}}</h6>
+                  <small>{{top?.orderPlaceDate | date}}</small>
+                </div>
+                <p class="mb-1">An Order has been placed by {{top?.address?.name || 'User'}}.</p>
+                <small>Status: {{top?.orderStatus}}</small>
+              </div>
+        </div>
+    </div>
+</div> -->
+
+<p-dialog header="Header" [(visible)]="orderDetailsExpand" [modal]="true" [breakpoints]="{ '960px': '95vw' }"
+    [style]="{ width: '80vw' }" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <h5>Order ID - {{selectedOrder || ''}}</h5>
+    </ng-template>
+    <div class="status">
+        <b> Status : {{orderedData?.orderStatus || ''}} </b> 
+    </div>
+        <div class="panel mb-4 p-3">
+            <h6>Order Medicine Details</h6>
+            <p-table [value]="orderedData?.OrderItems" [paginator]="true" [rows]="10" [responsive]="true">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Manufacturer</th>
+                        <th>Quantity</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-medicine>
+                    <tr>
+                        <td>{{ medicine.name }}</td>
+                        <td>{{ medicine.manufacturer }}</td>
+                        <td>{{ medicine.quantity }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="panel mb-4 p-3">
+            <h6>User Address Details</h6>
+            <div class="table-responsive">
+            <table class="table-border" style="width: 100%;">
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                </tr>
+                <tr>
+                    <td>{{ UserAddress?.name }}</td>
+                    <td>{{ UserAddress?.phone }}</td>
+                    <td>{{ UserAddress?.address }}</td>
+                </tr>
+            </table>
+            </div>
+    
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton type="button" icon="pi pi-check" label="Accept" class="p-button-success" [disabled]="orderedData?.orderStatus === 'Accepted' " (click)="orderAccept()"></button>
+        <button pButton type="button" icon="pi pi-times" label="Reject" class="p-button-danger" [disabled]="orderedData?.orderStatus === 'Rejected'" (click)="orderRejected()"></button>
+    </ng-template>
+
+</p-dialog>
+
+<p-toast position="bottom-center" key="bc"></p-toast>

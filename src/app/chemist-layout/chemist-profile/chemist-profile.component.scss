@@ -1,0 +1,31 @@
+.profile-container {
+    margin: 50px auto;
+  }
+
+
+  .profile-card label {
+    font-weight: 600;
+  }
+
+  .profile-card button {
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .profile-photo {
+    max-width: 50%;
+    height: auto;
+    display: block;
+  }
+
+  .image-upload .form-control, .image-upload .form-control:focus{
+    height: 38px;
+  }
+
+  .image-preview {
+    max-width: 300px;
+    height: auto;
+  }

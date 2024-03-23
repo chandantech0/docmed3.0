@@ -1,0 +1,12 @@
+<div style="margin: 20px 10px 20px 10px;"> <h1>Order History 
+  <button class="btn btn-success" style="float: right;" (click)="refreshOrderHistory()">Refresh</button>
+</h1></div>
+<div class="order-history p-card p-shadow-2 p-mb-2" *ngFor="let order of orders">
+  <h6>Order #{{ order.id }}</h6>
+  <p class="date-label">Date: {{ order.date | date }}</p>
+  <p>{{ order.OrderItems.length }} Medicines</p>
+  <!-- <p *ngFor="let orderItemsName of order.OrderItems">Medicines: {{ orderItemsName.name }}</p> -->
+  <p>Total: Rs. {{ order.total.toFixed(2) }}</p>
+  <p>Order Status : <b>{{ order.orderStatus }}</b></p>
+  <p-button *ngIf="order?.orderStatus === 'Accepted'" (click)="reOrder(order)" label="Re-Order"></p-button>
+</div>

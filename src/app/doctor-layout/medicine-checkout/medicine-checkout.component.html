@@ -1,0 +1,101 @@
+<div class="medicine-list container-fluid">
+    <ng-container *ngIf="!payUI">
+      <h6 class="mt-4 mb-3">Ordered Items</h6>
+      <ng-container *ngIf="selectedOrder.length > 0">
+        <div class="row" *ngFor="let item of selectedOrder; let i = index">
+          <div class="col-12">
+            <p-card class="medicine-list-card">
+              <div class="row">
+                <div class="col-7">
+                  <h6 class="mb-1">{{item?.name}}</h6>
+                  <small>{{item?.manufacturer}}</small>
+                  <!-- <p class="small mb-0"> {{item?.description}}</p> -->
+                </div>
+                <div class="col-5" style="margin: auto;">
+                  <!-- *ngIf="!withSelectQty" -->
+                  <div class="div-align-center" *ngIf="(item?.selected && item?.quantity !== 0)">
+                    <div>
+                      <button pButton pRipple type="button" class="gradient p-button-rounded decrement-btn" 
+                      (click)="decrementQuantity(item)">-</button>
+                      <span style="padding: 0 12px;">{{item?.quantity}}</span>
+                      <button pButton pRipple type="button" class="gradient p-button-rounded increment-btn" 
+                      (click)="incrementQuantity(item)">+</button>
+                    </div>
+                    <p class="small mt-1 mb-0">Rs. {{item?.price}} / Strip <br/>({{item?.perStripTabletQty}} Tab)</p>
+                  </div>
+                  <div class="div-align-center" *ngIf="(item?.selected && item?.quantity === 0)">Out Of Stock</div>
+                </div>
+              </div>
+            </p-card>
+          </div>
+        </div>
+      </ng-container>
+      <div class="mt-4 main">
+          <h6>Delivery Address <small> (All Field is Required)</small></h6> 
+          <form [formGroup]="DeliveryForm">
+            <div class="row mt-3">
+                <div class="col-12">
+                    <input type="text" class="form-control mb-3" placeholder="Delivery Area" formControlName="DeliveryArea" />
+                </div>
+                <div class="col-12">
+                    <input type="text" class="form-control mb-3" placeholder="Complete Address" formControlName="address" />
+                </div>
+                <div class="col-12">
+                    <input type="text" class="form-control mb-3" placeholder="Receiver Name" formControlName="name" />
+                </div>
+                <div class="col-12">
+                  <input type="number" class="form-control mb-1" placeholder="Receiver Number" formControlName="phone" (input)="onMobileNumberInput($event)" />
+                  <div *ngIf="validationError" class="error-message f-12">{{ validationError }}</div>
+              </div>
+            </div>
+          </form>
+      </div>
+
+          <!-- Order Box -->
+    <div class="order-box gradient">
+      <div class="row" *ngIf="!haveOutOfStockItems">
+        <div class="col-8">
+          <small class="small text-white">{{selectedOrder.length}} Items</small>
+          <h5 class="text-white">₹ {{totalPrice}} (Including Tax)</h5>
+        </div>
+        <div class="col-4">
+          <button *ngIf="userNotLogged" (click)="gotToLogin()" pButton pRipple type="button"
+          class="bg-white fw-bold text-black p-button-rounded">Login</button>
+          
+          <button *ngIf="!userNotLogged" (click)="validateUserToPay()" pButton pRipple type="button"
+            class="bg-white fw-bold text-black p-button-rounded" 
+            [disabled]="(selectedOrder.length === 0 || !DeliveryForm.valid || validationError)">Pay</button>
+        </div>
+      </div>
+      <div class="row" *ngIf="haveOutOfStockItems">
+        <div class="col-24" style="text-align: center;">
+          <button (click)="removeOutOfStock()" pButton pRipple type="button"
+          class="bg-white fw-bold text-black p-button-rounded">Remove Out of Stock Item</button>
+      </div>
+    </div>
+    </div>
+    </ng-container>
+
+    <ng-container *ngIf="payUI">
+      <div class="body">
+
+        <div class="payment-container">
+          <div class="payment-card">
+              <div class="payment-option">
+                  <span class="pi pi-credit-card payment-option-icon" (click)="placeOrderOnline()"></span>
+                  <span class="payment-option-label">Online Payment</span>
+              </div>
+          </div>
+          <div class="payment-card">
+              <div class="payment-option" (click)="placeOrderCOD()">
+                  <span class="pi pi-money-bill payment-option-icon"></span>
+                  <span class="payment-option-label">Cash on Delivery</span>
+              </div>
+          </div>
+      </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <p-toast position="bottom-center" key="bc"></p-toast>
+

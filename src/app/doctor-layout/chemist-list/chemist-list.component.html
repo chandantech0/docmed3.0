@@ -1,0 +1,125 @@
+<div class="find-loader" *ngIf="!chemistFind">
+  <div class="loader">Loading...</div>
+  <h3 class="text-white text-center">Searching Nearby <br> Chemists...</h3>
+</div>
+
+<ng-container *ngIf="chemistFind">
+  <div class="set-sticky container-fluid bg-light">
+    <div class="row" *ngIf="!search">
+      <div class="col-9">
+        <div class="medical-name">
+          <i class="pi pi-map-marker"></i>
+          <span class="fw-bold addressName">{{area ? area.toUpperCase() : ''}}</span>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="search">
+          <button (click)="isSearch()" pButton pRipple type="button" icon="pi pi-search"
+            class="float-end p-button-rounded p-button-success p-button-text"></button>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="search">
+      <div class="col-10">
+        <div class="search-input">
+          <input appFocus [(ngModel)]="searchValue" (input)="searchHappen($event)"
+          placeholder="Search Chemist..." type="text" #search pInputText />
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="search">
+          <button (click)="searchClose()" pButton pRipple type="button" icon="pi pi-times"
+            class="float-end p-button-rounded p-button-danger p-button-text"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="mt-4 chemist-list" *ngIf="!searchLoader">
+      <p-card *ngFor="let item of medicalLists" [routerLink]="['/doctor/medicine', item?.chemistSignUpId, item?._id]" >
+        <img class="img-fluid w-100 img-radius" alt="Card"
+        src="{{item?.image}}"
+        onerror="this.src='../../../assets/img/courier-hands-disposable-gloves-hold-paper-bag-with-pills-bottle-medicines-drugs-thermometer-inside-pharmacist-give-purchase-customer-home-delivery-pharmacy-service_458444-212.jpeg';" alt="Profile Photo">
+        <div class="footer">
+          <div class="row">
+            <div class="col-8">
+              <h6 class="mb-0">{{item?.title}}</h6>
+              <div class="text-one">
+                <small class="small ">{{item?.address}}</small>
+              </div>
+            </div>
+            <div class="col-4">
+              <small class="small">Delivery in</small>
+              <div class="small">with in 2 hr</div>
+            </div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+  
+    
+    <div class="custom-skeleton" *ngIf="searchLoader">
+      <div class="mt-4">
+        <p-skeleton width="100%" height="150px"></p-skeleton>
+        <div class="mt-2 p-d-flex p-jc-between p-mt-3">
+          <div class="row">
+            <div class="col-6">
+              <p-skeleton width="4rem" height="2rem"></p-skeleton>
+            </div>
+            <div class="col-6">
+              <div class="float-end">
+                <p-skeleton width="4rem" height="2rem"></p-skeleton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <p-skeleton width="100%" height="150px"></p-skeleton>
+        <div class="mt-2 p-d-flex p-jc-between p-mt-3">
+          <div class="row">
+            <div class="col-6">
+              <p-skeleton width="4rem" height="2rem"></p-skeleton>
+            </div>
+            <div class="col-6">
+              <div class="float-end">
+                <p-skeleton width="4rem" height="2rem"></p-skeleton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <p-skeleton width="100%" height="150px"></p-skeleton>
+        <div class="mt-2 p-d-flex p-jc-between p-mt-3">
+          <div class="row">
+            <div class="col-6">
+              <p-skeleton width="4rem" height="2rem"></p-skeleton>
+            </div>
+            <div class="col-6">
+              <div class="float-end">
+                <p-skeleton width="4rem" height="2rem"></p-skeleton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </div> 
+</ng-container>
+
+<ng-container *ngIf="medicalLists?.length === 0">
+  <div class="col-12">
+    <div class="div-align-center">
+      <img src="../../../assets/img/no-medical.jpg" alt="No Chemist" class="hw-100" />
+      <h6>No Chemist Found In {{area}}</h6>
+      </div>
+  </div>
+</ng-container>
+
+<p-toast position="bottom-center" key="bc"></p-toast>
+

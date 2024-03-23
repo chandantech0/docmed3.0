@@ -1,0 +1,115 @@
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" style="cursor: pointer;" (click)="toggleSidebar()"><i class="pi pi-align-justify"></i></a>
+      <a class="navbar-brand" href="javascript:void(0)">DocMed</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item notification">
+            <div class="dropdown">
+              <button class="btn dropdown-toggle" style="color: #fff;" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" (click)="notificationDropDownClick()">
+                <div class="notification-indicator" *ngIf="newOrderIndicator">
+                </div>
+                Order Notification
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="max-height: 300px; overflow-y: auto;">
+                <li>
+                <!-- Order Placed Notification 1 -->
+                <ng-container *ngIf="topNotification && topNotification.length === 0">
+                  <div class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h6 class="mb-1"> No new orders!</h6>
+                    </div>
+                </div>
+                 
+                </ng-container>
+                <ng-container *ngIf="topNotification && topNotification.length > 0">
+                  <ng-container *ngFor="let top of topNotification">
+                    <div class="list-group-item" [ngClass]="{'highlight-row': top.orderStatus === 'Not Accept'}">
+                        <div class="d-flex w-100 justify-content-between">
+                          <h6 class="mb-1">Order - {{top?.orderId}}</h6>
+                          <small>{{top?.orderPlaceDate | date}}</small>
+                        </div>
+                        <p class="mb-1">An Order has been placed by {{top?.customerName || 'User'}}.</p>
+                        <small>Status: {{top?.orderStatus}}</small>
+                    </div>
+                  </ng-container>
+                </ng-container>              
+                </li>
+               
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" icon="pi pi-user" routerLink="/chemist/profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="logOut()">Log Out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container-fluid">
+    <div class="row">
+
+      <!-- Sidebar -->
+      <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar" [ngClass]="{'visible': isVisible, 'hidden': !isVisible}">
+        <div class="position-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/chemist/dashboard']" routerLinkActive="active">
+                Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/chemist/inventory-Management']" routerLinkActive="active">
+                Inventory Management 
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/chemist/order-placed-list']" routerLinkActive="active">
+                Orders Placed
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                Purchase History
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" [ngClass]="{'full-width': !isVisible}">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+          <!-- <h1 class="h2">Chemist Dashboard</h1> -->
+        </div>
+
+        <!-- Your content goes here -->
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-navigation">
+    <a class="nav-link" [routerLink]="['/chemist/dashboard']" routerLinkActive="active">
+      Dashboard Status
+    </a>
+    <a class="nav-link" [routerLink]="['/chemist/inventory-Management']" routerLinkActive="active">
+      Inventory Management 
+    </a>
+    <a class="nav-link" [routerLink]="['/chemist/order-placed-list']" routerLinkActive="active">
+     Order Notification
+    </a>
+    <a class="nav-link" href="#">
+      Purchase History
+    </a>
+  </div>

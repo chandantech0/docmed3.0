@@ -1,0 +1,6 @@
+.angular/
+/dist/
+/node_modules/
+*.log
+.angular/cache/
+echo "path/to/16.pack"

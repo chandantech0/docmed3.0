@@ -1,0 +1,69 @@
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card" style="border-radius: 1rem;">
+          <div class="card-body p-5" *ngIf="!isForgetPassword">
+
+            <div class="mb-md-5 mt-md-4">
+
+              <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+              <p class=" mb-5">Please enter your login and password!</p>
+      
+              <div class="p-fluid grid">
+                <div class="field mb-4">
+                  <span class="p-float-label">
+                    <input type="text" id="inputtext" pInputText [(ngModel)]="userName">
+                    <label for="inputtext">Email</label>
+                  </span>
+                </div>
+                <div class="field mb-3 mt-2">
+                  <span class="p-float-label">
+                    <input type="password" id="inputtext" pInputText [(ngModel)]="password">
+                    <label for="inputtext">Password</label>
+                  </span>
+                </div>
+              </div>
+              <div>
+                <a class="fw-bold" style="text-decoration: none;" (click)="forgetPassword()">Forget Password</a>
+              </div>
+              <!-- <p class="small mb-5 pb-lg-2"><a class="" href="#!">Forgot password?</a></p> -->
+              <div class="text-center mt-4">
+              <button pButton type="button" pRipple label="Login" [disabled]="!userName || !password" (click)="login()"></button>
+              </div>
+              <!-- <button pButton type="button" pRipple label="Login" [routerLink]="['/doctor/chemist']"></button> -->
+            </div>
+            <div>
+              <p class="mb-0 mt-2">Don't have an account? <a [routerLink]="['/signUp']" class="fw-bold">Sign Up</a></p>
+            </div>
+          </div>
+
+          <div class="card-body p-5" *ngIf="isForgetPassword">
+
+            <div class="mb-md-5 mt-md-4">
+
+              <h2 class="fw-bold mb-2 text-uppercase">Forget Password</h2>
+              <p class=" mb-4">Please enter your Email.</p>
+      
+              <div class="p-fluid grid">
+                <div class="field mb-4">
+                  <span class="p-float-label">
+                    <input type="text" id="inputtext" pInputText [(ngModel)]="userName">
+                    <label for="inputtext">Email</label>
+                  </span>
+                </div>
+              </div>
+              <div class="text-center mt-4">
+              <button pButton type="button" pRipple label="Sent" [disabled]="!userName" (click)="forgetPasswordSent()"></button>
+              </div>
+            </div>
+            <div>
+              <p class="mb-0 mt-3">Remember Credential ? <a (click)="isForgetPassword = false" class="fw-bold">Log In</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

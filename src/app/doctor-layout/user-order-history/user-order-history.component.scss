@@ -1,0 +1,33 @@
+/* src/app/order-history/order-history.component.css */
+
+.order-history {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1rem;
+    border-radius: 5px;
+    transition: box-shadow 0.3s;
+  }
+  
+  .order-history:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  
+  p {
+    margin: 0.5rem 0;
+    color: #555;
+  }
+  
+  .date-label {
+    font-weight: bold;
+    color: #2196f3;
+  }
+
+  .p-card {
+    margin: 10px;
+  }
+  

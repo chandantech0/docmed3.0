@@ -1,0 +1,65 @@
+<div class="profile-container">
+    <div class="row">
+        <div class="col-md-12 mb-4" *ngIf="!editMode">
+            <div class="profile-card">
+                <h2 class="mb-4">Profile Information</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Chemist Name</label>
+                        <p id="name">{{profileData?.chemist_name}}</p>
+
+                        <!-- <label for="email" class="form-label">Email</label>
+                        <p id="email">john@example.com</p> -->
+
+                        <label for="number" class="form-label">Phone Number</label>
+                        <p id="number">{{profileData?.phone}}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="photo" class="form-label">Chemist Profile Photo</label>
+                        <img src="{{profileData?.chemist_profile_image}}"
+                        onerror="this.src='../../../assets/img/courier-hands-disposable-gloves-hold-paper-bag-with-pills-bottle-medicines-drugs-thermometer-inside-pharmacist-give-purchase-customer-home-delivery-pharmacy-service_458444-212.jpeg';"alt="Profile Photo" class="profile-photo mb-3">
+
+                    </div>
+                </div>
+
+
+                <button (click)="toggleEditForm()" class="btn btn-primary">Edit Profile</button>
+            </div>
+        </div>
+
+        <div class="col-md-12 mb-4" *ngIf="editMode">
+            <div class="profile-card">
+                <h2 class="mb-4">Edit Profile</h2>
+                <form [formGroup]="profileForm" *ngIf="editMode">
+                    <!-- <div class="mb-3">
+                      <label for="editName" class="form-label">Chemist Name</label>
+                      <input type="text" formControlName="chemistName" class="form-control" />
+                    </div>
+           -->
+                    <!-- <div class="mb-3">
+                      <label for="editEmail" class="form-label">Email</label>
+                      <input type="email" formControlName="userEmailId" class="form-control" />
+                    </div> -->
+          
+                    <div class="mb-3">
+                      <label for="editNumber" class="form-label">Phone Number</label>
+                      <input type="tel" formControlName="phoneNumber" class="form-control" (input)="onMobileNumberInput($event)" />
+                      <div *ngIf="validationError" class="error-message f-12">{{ validationError }}</div>
+                    </div>
+          
+                    <div class="mb-3 image-upload">
+                      <label for="editPhoto" class="form-label">Profile Photo <small> (Please upload only image file type)</small></label>
+                      <input type="file" class="form-control" (change)="onImagePicked($event)">
+                    </div>
+
+                    <div class="mb-3 image-preview">
+                       <img [src]="imagePreview"  *ngIf="imagePreview !== '' && imagePreview && profileForm.get('photo')?.valid" alt="Upload Image" id="previewImage" style="width: 100%;" />
+                      </div>
+          
+                      <button type="button" (click)="saveChanges()" class="btn btn-primary">Save Changes</button>&nbsp;
+                      <button type="button" (click)="resetToBack()" class="btn btn-secondary">Back</button>
+                  </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,151 @@
+<div class="set-sticky container-fluid bg-light">
+  <div class="row" *ngIf="!search">
+    <div class="col-10">
+      <div class="mt-2 mb-2">
+        <h6 class="mb-1">{{chemistData?.title}}</h6>
+        <p class="small mb-0" style="line-height: 1.4;">{{chemistData?.address}}</p>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="search">
+        <button (click)="isSearch()" pButton pRipple type="button" icon="pi pi-search"
+          class="float-end p-button-rounded p-button-success p-button-text"></button>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="search">
+    <div class="col-8">
+      <div class="mt-2 mb-2">
+        <input appFocus placeholder="Search Medicines..." [(ngModel)]="searchValue" style="padding: 10px 0;"
+        (input)="searchHappen($event)" type="text" #search pInputText />
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="search">
+        <button pButton pRipple type="button" icon="pi pi-upload"
+        class="p-button-rounded p-button-success p-button-text"></button>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="search">
+        <button (click)="searchClose()" pButton pRipple type="button" icon="pi pi-times"
+          class="p-button-rounded p-button-danger p-button-text"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="medicine-list container-fluid mt-4">
+  <div class="row">
+    <div class="col-12">
+      <h6>List of Medicine</h6>
+    </div>
+  </div>
+
+  <div class="scroll main" *ngIf="!searchLoader">
+    <ng-container *ngIf="medicines?.length > 0">
+      <div class="row">
+        <div class="col-10">
+          <div class="mt-2 mb-2">
+           Upload Prescription
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="search">
+            <input type="file" (change)="onFileSelected($event)" accept="image/*">
+            <button (click)="uploadImage()" pButton pRipple type="button" icon="pi pi-upload"
+            class="p-button-rounded p-button-success p-button-text"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" *ngFor="let item of medicines; let i = index">
+        <div class="col-12">
+          <p-card class="medicine-list-card">
+            <div class="row">
+              <div class="col-7">
+                <h6 class="mb-1">{{item?.name}}</h6>
+                <small>{{item?.manufacturer}}</small>
+                <!-- <p class="small mb-0"> {{item?.description}}</p> -->
+              </div>
+              <div class="col-5" style="margin: auto;">
+                <!-- *ngIf="!withSelectQty" -->
+                <div class="div-align-center" *ngIf="item?.stripQuantity > 0">
+                  <button *ngIf="!item?.selected" (click)="add(item)" pButton pRipple type="button" class="gradient p-button-rounded">Add +</button>
+                  <div *ngIf="item?.selected" >
+                   
+                    <button pButton pRipple type="button" class="gradient p-button-rounded decrement-btn" 
+                    (click)="decrementQuantity(item)">-</button>
+                    <span style="padding: 0 12px;">{{item?.quantity}}</span>
+                    <button pButton pRipple type="button" class="gradient p-button-rounded increment-btn" 
+                    (click)="incrementQuantity(item)">+</button>
+                  </div>
+                  <p class="small mt-1 mb-0">Rs. {{item?.price}} / Strip <br/>({{item?.perStripTabletQty}} Tab)</p>
+                </div>
+                <div class="div-align-center" *ngIf="item?.stripQuantity === 0">Out Of Stock</div>
+              </div>
+            </div>
+          </p-card>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="medicines?.length === 0">
+      <div class="col-12">
+        <div class="div-align-center">
+          <img src="../../../assets/img/no-medicine.jpg" alt="No Medicine" class="hw-100" />
+          <h6>No Medicine Found</h6>
+          </div>
+      </div>
+    </ng-container>
+  </div>
+
+</div>
+  <!-- Order Box -->
+  <div class="order-box gradient" *ngIf="orderBox">
+    <div class="row">
+      <div class="col-8">
+        <small class="small text-white">{{selectedItem.length}} Items</small>
+        <h5 class="text-white">₹ {{totalPrice}} (Including Tax)</h5>
+      </div>
+      <div class="col-4">
+        <button (click)="gotToCheckout()" pButton pRipple type="button"
+          class="bg-white fw-bold text-black p-button-rounded">Order</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="custom-skeleton" *ngIf="searchLoader">
+    <div class="mt-4">
+      <p-skeleton width="100%" height="80px"></p-skeleton>
+      <div class="mt-2 p-d-flex p-jc-between p-mt-3">
+      </div>
+    </div>
+    <div class="mt-4">
+      <p-skeleton width="100%" height="80px"></p-skeleton>
+      <div class="mt-2 p-d-flex p-jc-between p-mt-3">
+      </div>
+    </div>
+    <div class="mt-4">
+      <p-skeleton width="100%" height="80px"></p-skeleton>
+      <div class="mt-2 p-d-flex p-jc-between p-mt-3">
+      </div>
+    </div>
+    <div class="mt-4">
+      <p-skeleton width="100%" height="80px"></p-skeleton>
+      <div class="mt-2 p-d-flex p-jc-between p-mt-3">
+      </div>
+    </div>
+    <div class="mt-4">
+      <p-skeleton width="100%" height="80px"></p-skeleton>
+      <div class="mt-2 p-d-flex p-jc-between p-mt-3">
+      </div>
+    </div>
+    <div class="mt-4">
+      <p-skeleton width="100%" height="80px"></p-skeleton>
+      <div class="mt-2 p-d-flex p-jc-between p-mt-3">
+      </div>
+    </div>
+  </div>
+  
+  <p-toast position="bottom-center" key="bc"></p-toast>

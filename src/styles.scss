@@ -1,0 +1,325 @@
+/* You can add global styles to this file, and also import other style files */
+
+$gradient-start: #6a11cb;
+$gradient-end: #2575fc;
+
+body,
+.p-inputtext,
+.p-component {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+/* Styles for the loading overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(46 46 46 / 70%); /* semi-transparent white overlay */
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* make sure it's on top of other elements */
+  display: none; /* initially hidden */
+}
+
+.loading-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 6px;
+}
+
+/* Optional: Add some animation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  border: 4px solid #ccc;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+.loader-border {
+  display: flex;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+.p-inputtext {
+  background: transparent;
+  width: 100%;
+}
+
+.p-inputtext:enabled:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.1rem #010204;
+  border-color: transparent;
+}
+
+.navbar-icon i {
+  margin: 0 10px 0 20px;
+}
+
+.pi {
+  font-size: 1.2rem;
+}
+
+.medical-name {
+  padding: 18px 0;
+}
+
+.search {
+  padding: 5px 0;
+}
+
+.search-input {
+  padding: 6px 0;
+}
+
+.top-item {
+  padding: 8px 0;
+}
+
+.small {
+  font-size: 0.8rem;
+  // display: inline-flex;
+  color: #838383;
+  line-height: 1.2em;
+}
+
+.gradient,
+.gradient:enabled:hover {
+  border: none;
+  background: linear-gradient(to right, #08D78C, #00AB6D);
+}
+
+.p-button:focus {
+  box-shadow: none;
+}
+
+.medicine-list-card .p-card-content {
+  padding: 0;
+}
+
+.medicine-list-card .p-card-body {
+  padding: 1rem 0.5rem;
+  margin-bottom: 10px;
+  border: 1px solid #e6e3e3;
+  border-radius: 6px;
+}
+
+.fw-bold {
+  font-weight: 500 !important;
+}
+
+.medicine-list-card .p-button {
+  padding: 0.1rem 0.5rem 0.1rem 0.8rem;
+}
+
+.navbar {
+  box-shadow: 0px 4px 8px rgb(0 0 0 / 4%);
+}
+
+.order-box {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 15px 10px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  z-index: 9;
+}
+
+.medicine-list .p-card {
+  background: #F7F9FB;
+  box-shadow: none;
+}
+
+.medicine-list-card .small {
+  font-size: .75rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+}
+
+.p-button {
+  border: none
+}
+
+.set-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.form-control, .form-control:focus{
+    border-color: #afafaf6b;
+    box-shadow: none;
+    height: 50px;
+}
+
+.checkout button{
+    padding: 0.75rem 0.6rem;
+    width: 100%;
+    display: block;
+}
+.chemist-list .p-card .p-card-body, .chemist-list .p-card .p-card-content{
+    padding: 0;
+}
+.chemist-list .footer{
+    padding: 15px;
+}
+.chemist-list .p-card{
+    box-shadow: none;
+    background: #F7F9FB;
+    margin-bottom: 20px;
+    border-radius: 16px;
+}
+.img-radius{
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+.dropdown-menu[data-bs-popper] {
+    right: 0;
+    left: inherit;
+}
+.div-align-center{
+  margin: auto;
+    text-align: center;
+}
+
+.radio-title{
+  position: relative;
+  // top: 2px;
+  left: 5px;
+}
+
+.font-14{
+  font-size: 14px;
+}
+
+.text-one{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.hw-100{
+  height: 100%;
+  width: 100%;
+}
+
+.bg-primary {
+  --bs-bg-opacity: 1;
+  background: #6a11cb !important;
+  background: linear-gradient(to right, $gradient-start, $gradient-end)!important;
+}
+
+.form-check-input:checked {
+  background-color: #6a11cb;
+  border-color: #6a11cb;
+}
+
+.p-datatable .p-datatable-header{
+  padding: initial;
+}
+
+.panel{
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 4px;
+}
+
+.btn-primary{
+  padding: 10px 15px;
+}
+
+.p-dropdown{
+  display: flex !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th{
+  background: transparent;
+}
+
+.p-datatable .p-datatable-tbody > tr > td{
+  padding: 0.3rem 1rem;
+}
+
+.Coloumnfilter{
+  padding: 0rem 1rem !important;
+}
+
+ tr > th {
+  text-align: left;
+    padding: 1rem 1rem;
+    border: 1px solid #dee2e6;
+    border-width: 0 0 1px 0;
+    font-weight: 700;
+    color: #343a40;
+    transition: box-shadow 0.2s;
+ }
+
+ .table-top-button{
+  position: absolute;
+  right: 22px;
+  margin-top: -5px;
+ }
+
+ tr > td {
+  padding: 0.3rem 1rem;
+  border: 1px solid #dee2e6;
+  border-width: 0 0 1px 0;
+ }
+
+ .highlight-row {
+  background-color: #f1c40f63 !important; /* Set the desired background color */
+
+  .vh-100{ 
+    height: auto;
+  }
+
+  @media (max-width: 768px) {
+    .vh-100{ 
+      height: 100vh;
+    }
+  }
+  
+  /* Add more styles as needed */
+}
+
+.p-button.p-button-rounded {
+  border-radius: 6px;
+}
+
+.p-dialog .p-dialog-header{
+  border-bottom: 1px solid #ccc;
+  padding: 1rem;
+}
+
+.error-message {
+  color: red;
+  margin-top: 5px;
+}
+
+.f-12{font-size: 12px;}
+
+.border-6{
+  border-radius: 6px;
+}
+
+button.btn.btn-secondary {
+  background: #00c760;
+}
+
+.p-datatable-resizable .p-datatable-thead>tr>th, .p-datatable-resizable .p-datatable-tfoot>tr>td, .p-datatable-resizable .p-datatable-tbody>tr>td{
+  white-space: normal !important;
+}

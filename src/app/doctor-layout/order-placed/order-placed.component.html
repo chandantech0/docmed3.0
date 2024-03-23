@@ -1,0 +1,11 @@
+<div class="gradient loan-success-pop-up card text-center">
+    <div class="m-auto">
+        <h1 class="text-card pt-4 text-white">Order
+          Placed</h1>
+        <p class="text-white mb-1">Order ID : {{orderId || ''}}</p>
+        <p class="small text-white mb-1"> Date : {{dateTime}} </p>
+        <button [routerLink]="['/doctor/chemist']" (click)="clickMoreOrder()" pButton pRipple type="button"
+        class="bg-white fw-bold text-black p-button-rounded more-order">More Order</button>
+    </div>
+
+</div>
