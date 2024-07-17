@@ -7,14 +7,25 @@ router.post('/api/user/getMedicalLists', async (req, res, next) => {
     try {
         const { area, city } = req.body;
         // Define the condition based on the presence of area or city
-        const condition = area ? { area, isActive: true, isBlock: false } : { city, isActive: true, isBlock: false };
+        let condition;
+        condition = { area, isActive: true, isBlock: false };
         const medicalListEntry = await medicalList.find(condition);
-    
-        res.status(200).json({
-          status: 'success',
-          message: 'Data fetch success',
-          medicalLists: medicalListEntry,
-        });
+        if (medicalListEntry.length > 0) {
+          console.log('1')
+            res.status(200).json({
+              status: 'success',
+              message: 'Data fetch success',
+              medicalLists: medicalListEntry,
+            });
+        } else {
+          condition = { city, isActive: true, isBlock: false };
+          const medicalListEntryByCity = await medicalList.find(condition);
+          res.status(200).json({
+            status: 'success',
+            message: 'Data fetch success',
+            medicalLists: medicalListEntryByCity,
+          });
+        }
       } catch (error) {
         res.status(500).json({
           status: 'error',

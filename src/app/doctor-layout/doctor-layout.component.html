@@ -1,6 +1,8 @@
 <nav class="navbar navbar-light">
   <div class="container-fluid">
-    <a class="navbar-brand" [routerLink]="['/doctor/chemist']">DocMed</a>
+    <a class="navbar-brand" [routerLink]="['/doctor/chemist']">
+    <img src="../../assets/img/doc.svg" alt="logo" class="img-fluid logo" />
+    </a>
     <div class="d-flex navbar-icon">
       <!-- <div>
         <button pButton pRipple type="button" icon="pi pi-bell"
@@ -8,7 +10,7 @@
       </div> -->
       <div class="dropdown">
         <button pButton pRipple type="button" icon="pi pi-user"
-          class="p-button-rounded p-button-info p-button-text" id="dropdownMenuLink"
+          class="p-button-rounded p-button-info p-primary p-button-text" id="dropdownMenuLink"
           data-bs-toggle="dropdown" aria-expanded="false"></button>
 
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">

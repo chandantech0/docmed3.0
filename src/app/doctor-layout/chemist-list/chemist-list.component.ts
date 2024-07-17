@@ -91,20 +91,24 @@ export class ChemistListComponent implements OnInit, AfterViewInit {
     if ("geolocation" in navigator) {
       // Get the user's current position
       navigator.geolocation.getCurrentPosition((position) => {
-        // const latitude = position.coords.latitude;
-        // const longitude = position.coords.longitude;
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
         // for delhi use 
-        const latitude = '28.622339';
-        const longitude = '77.022888';
+        // const latitude = '28.622339';
+        // const longitude = '77.022888';
 
         // Use Nominatim API for reverse geocoding
         fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
           .then(response => response.json())
           .then(data => {
             console.log(data);
-            this.area = data.address?.town || data.address?.village || data.address?.suburb;
-            this.city = data.address?.city_district || data.address?.state || data.address?.region || data.address?.county;
-
+            // this.area = data.address?.town || data.address?.county || data.address?.village || data.address?.suburb;
+            // this.city = data.address?.city_district || data.address?.state_district || data.address?.region;
+            const displayNameArray = data.display_name.split(',');
+            // Get the second last value (city) from the array
+            // this.city = displayNameArray[displayNameArray.length - 2].trim();
+            this.area = displayNameArray[0].trim().toLowerCase();
+            this.city = displayNameArray[1].trim().toLowerCase();
             this.util.setItemToLocalStorage('city', this.city);
             this.util.setItemToLocalStorage('area', this.area);
             this.getAllChemistList(this.city, this.area);

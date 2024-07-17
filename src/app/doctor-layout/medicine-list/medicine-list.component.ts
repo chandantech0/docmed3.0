@@ -9,7 +9,6 @@ import { UtilsService } from 'src/app/shared/utility';
 import { DoctorModuleService } from '../services/directives/service/doctor-module.service';
 import { ToastMessageService } from 'src/app/shared/toast-message.service';
 import { LoadingService } from 'src/app/shared/loading.service';
-import * as Tesseract from 'tesseract.js';
 @Component({
   selector: 'app-medicine-list',
   templateUrl: './medicine-list.component.html',
@@ -92,19 +91,19 @@ export class MedicineListComponent implements OnInit {
 
   extractTextFromImage(imageData: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      Tesseract.recognize(
-        imageData,
-        'eng',
-        { logger: (info) => console.log(info) }
-      ).then(
-        (result: any) => {
-          const extractedText = result.text;
-          resolve(extractedText);
-        },
-        (error) => {
-          reject(error);
-        }
-      );
+      // Tesseract.recognize(
+      //   imageData,
+      //   'eng',
+      //   { logger: (info: any) => console.log(info) }
+      // ).then(
+      //   (result: any) => {
+      //     const extractedText = result.text;
+      //     resolve(extractedText);
+      //   },
+      //   (error: any) => {
+      //     reject(error);
+      //   }
+      // );
     });
   }
 

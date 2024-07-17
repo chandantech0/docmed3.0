@@ -56,14 +56,14 @@
       <div class="row" *ngIf="!haveOutOfStockItems">
         <div class="col-8">
           <small class="small text-white">{{selectedOrder.length}} Items</small>
-          <h5 class="text-white">₹ {{totalPrice}} (Including Tax)</h5>
+          <h6 class="text-white">₹ {{totalPrice}} (Including Tax)</h6>
         </div>
         <div class="col-4">
           <button *ngIf="userNotLogged" (click)="gotToLogin()" pButton pRipple type="button"
           class="bg-white fw-bold text-black p-button-rounded">Login</button>
           
           <button *ngIf="!userNotLogged" (click)="validateUserToPay()" pButton pRipple type="button"
-            class="bg-white fw-bold text-black p-button-rounded" 
+            class="bg-white fw-bold text-black p-button-rounded p-search-white" 
             [disabled]="(selectedOrder.length === 0 || !DeliveryForm.valid || validationError)">Pay</button>
         </div>
       </div>

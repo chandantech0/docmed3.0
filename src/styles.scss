@@ -74,15 +74,18 @@ body,
 }
 
 .medical-name {
-  padding: 18px 0;
+  padding: 23px 5px;
+  position: relative;
+    top: 5px;
 }
 
 .search {
-  padding: 5px 0;
+  padding: 15px 0;
+  
 }
 
 .search-input {
-  padding: 6px 0;
+  padding: 10px 0;
 }
 
 .top-item {
@@ -111,10 +114,10 @@ body,
 }
 
 .medicine-list-card .p-card-body {
-  padding: 1rem 0.5rem;
+  padding: 0.7rem 1rem 0.5rem;
   margin-bottom: 10px;
-  border: 1px solid #e6e3e3;
-  border-radius: 6px;
+  border: 1px solid #efefef;
+  border-radius: 12px;
 }
 
 .fw-bold {
@@ -132,9 +135,9 @@ body,
 .order-box {
   position: fixed;
   left: 0;
-  bottom: 0;
+  bottom: -1px;
   width: 100%;
-  padding: 15px 10px;
+  padding: 15px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   z-index: 9;
@@ -143,6 +146,7 @@ body,
 .medicine-list .p-card {
   background: #F7F9FB;
   box-shadow: none;
+  border-radius: 12px;
 }
 
 .medicine-list-card .small {
@@ -161,10 +165,15 @@ body,
   z-index: 999;
 }
 
-.form-control, .form-control:focus{
-    border-color: #afafaf6b;
+.form-control{
+    border-color: #efefef;
     box-shadow: none;
     height: 50px;
+}
+
+.form-control:focus{
+  border-color: #ef5c4a7a;
+  box-shadow: none;
 }
 
 .checkout button{
@@ -194,7 +203,12 @@ body,
 }
 .div-align-center{
   margin: auto;
-    text-align: center;
+  text-align: center;
+}
+
+.div-align-right{
+  margin: auto;
+  text-align: right;
 }
 
 .radio-title{
@@ -322,4 +336,45 @@ button.btn.btn-secondary {
 
 .p-datatable-resizable .p-datatable-thead>tr>th, .p-datatable-resizable .p-datatable-tfoot>tr>td, .p-datatable-resizable .p-datatable-tbody>tr>td{
   white-space: normal !important;
+}
+
+.logo{
+  max-width: 100%;
+  height: 2rem;
+}
+
+.bg-light{
+  background: #e91178;
+  background-image: linear-gradient(to right, #ffdfee73, #ffe4ce91);
+}
+
+.p-primary{
+  color: #d32c2c !important;
+}
+
+.gradient, .gradient:enabled:hover{
+  background: #e91178;
+  background-image: linear-gradient(to right, #E91178, #F28021);
+}
+
+.p-primary-light{
+  color: #7a7a7a !important;
+}
+
+
+.p-primary-text{
+  color: #101010 !important;
+}
+
+.p-button{
+  background: #e91178;
+    background-image: linear-gradient(to right, #E91178, #F28021);
+}
+
+.p-search{
+  background: transparent !important;
+}
+
+.p-search-white{
+  background: #fff !important;
 }
