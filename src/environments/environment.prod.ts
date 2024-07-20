@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:3000'
+  apiBaseUrl: 'https://docmed3backendcode-chandantech0s-projects.vercel.app/'
 };
