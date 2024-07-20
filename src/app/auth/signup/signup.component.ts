@@ -224,7 +224,6 @@ export class SignupComponent implements OnInit {
   checkPinCode() {
     const pinCodeInput = document.getElementById('pinCodeInput') as HTMLInputElement;
     const zipCode = pinCodeInput.value;
-    console.log(zipCode)
     if (zipCode.length === 6) {
       this.loadingService.setLoading(true);
       // Make an API request (replace with the actual mappls API endpoint)
@@ -234,8 +233,7 @@ export class SignupComponent implements OnInit {
         .then(response => response.json())
         .then(data => {
           this.loadingService.setLoading(false);
-          console.log(data[0])
-          const firstLetterOfArea = data[0] ? data[0].display_name.split(',')[0] : null;
+          const firstLetterOfArea = data[0] ? this.extractArea(data[0].display_name) : null;
           this.area = firstLetterOfArea;
           console.log(this.area);
           if(this.area) {
@@ -255,6 +253,14 @@ export class SignupComponent implements OnInit {
         });
     }
   }
+
+   extractArea(displayName: string) {
+    // Use a regular expression to find the first sequence of alphabetic characters
+    const match = displayName.match(/[A-Za-z]+/);
+    
+    // If a match is found, return it; otherwise, return a default value or null
+    return match ? match[0] : null;
+}
 
   onMobileNumberInput(event: Event): void {
     this.validationError = null; // Reset error on every input
