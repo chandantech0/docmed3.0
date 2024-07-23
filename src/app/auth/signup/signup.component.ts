@@ -26,6 +26,8 @@ export class SignupComponent implements OnInit {
   userType: any;
   validationError: string | null = null;
   validationErrorForEmail: string |  null = null;
+  errorMessage: string = '';
+  errorMessageEnable: boolean = false;
   constructor(
     private AuthAPIService: AuthAPIService,
     private messageService: MessageService,
@@ -51,6 +53,8 @@ export class SignupComponent implements OnInit {
         city: [''],
         chemistName: [''],
         area: [''],
+        lat: ['', Validators.required],
+        lng: ['', Validators.required],
         // medicalLicense: [{ value: '', disabled: true }, Validators.required], // Optional field for doctors
       });
  
@@ -284,5 +288,45 @@ export class SignupComponent implements OnInit {
     if (!isValid) {
       this.validationErrorForEmail = 'Invalid Email Address format';
     }
+  }
+
+  getGeoLocation() {
+    // Check if the browser supports Geolocation
+    if ("geolocation" in navigator) {
+      // Get the user's current position
+      this.loadingService.setLoading(true);
+      navigator.geolocation.getCurrentPosition((position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        this.signUpForm.patchValue({
+          lat: latitude,
+          lng: longitude
+        })
+        this.errorMessageEnable = false;
+        this.errorMessage = '';
+        this.loadingService.setLoading(false);
+      }, (error) => {
+        this.errorMessageEnable = true;
+        this.loadingService.setLoading(false);
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            this.errorMessage = 'User denied the request for Geolocation. Please enable location services and then click Ok button';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            this.errorMessage = 'Location information is unavailable.';
+            break;
+          case error.TIMEOUT:
+            this.errorMessage = 'The request to get user location timed out.';
+            break;
+            default: 
+            this.errorMessage = 'Please enable location services.';
+            break;
+        }
+      });
+    } else {
+      alert("Geolocation is not supported in this browser.");
+    }
+    // Google Map Configuration
+    // navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
   }
 }

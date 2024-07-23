@@ -11,18 +11,20 @@ export class DoctorModuleService {
     private apiService: ApiService
   ) { }
 
-  getAllChemistList(city: string, area: string): Observable<any> {
+  getAllChemistList(city: string, position: any, area: string): Observable<any> {
     const obj = {
       city: city.toLowerCase(),
       area: area ? area.toLowerCase() : '',
+      coordinate: position,
     }
     return this.apiService.post('/api/user/getMedicalLists', obj);
   }
 
-  getFindChemistList(city: String, searchKey:String): Observable<any> {
+  getFindChemistList(city: String, searchKey:String, position: any): Observable<any> {
     const obj = {
       city: city,
-      searchKey: searchKey
+      searchKey: searchKey,
+      coordinate: position
     }
     return this.apiService.post('/api/user/getMedicalListsSearch', obj);
   }

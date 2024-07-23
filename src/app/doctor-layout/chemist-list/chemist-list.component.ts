@@ -38,6 +38,9 @@ export class ChemistListComponent implements OnInit, AfterViewInit {
   medicalLists: any;
   currentAddress: any;
   area: any;
+  errorMessage: any;
+  errorMessageEnable: boolean = false;
+  position: any = {};
   constructor(
     private messageService: MessageService,
     private doctorService: DoctorModuleService,
@@ -48,7 +51,7 @@ export class ChemistListComponent implements OnInit, AfterViewInit {
       const searchKey = res;
       if (searchKey && searchKey.length) {
         this.searchLoader = true;
-        this.doctorService.getFindChemistList(this.city, searchKey).subscribe((res: any) => {
+        this.doctorService.getFindChemistList(this.city, searchKey, this.position).subscribe((res: any) => {
           this.chemistFind = true;
           this.searchLoader = false;
           this.medicalLists = res.medicalLists;
@@ -61,7 +64,7 @@ export class ChemistListComponent implements OnInit, AfterViewInit {
           });
         });
       } else {
-        this.getAllChemistList(this.city, this.area);
+        this.getAllChemistList(this.city, this.position, this.area);
       }
     });
   }
@@ -70,14 +73,16 @@ export class ChemistListComponent implements OnInit, AfterViewInit {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
     if (!this.medicalLists) {
-      if (this.util.getItemToLocalStorage('city') && this.util.getItemToLocalStorage('area')) {
-        this.city = this.util.getItemToLocalStorage('city').toLowerCase();
-        this.area = this.util.getItemToLocalStorage('area').toLowerCase();
-        this.getAllChemistList(this.city, this.area);
-      } else {
-        this.chemistFind = false;
-        this.getGeoLocation();
-      }
+      // if (this.util.getItemToLocalStorage('city') && this.util.getItemToLocalStorage('area')) {
+      //   this.city = this.util.getItemToLocalStorage('city').toLowerCase();
+      //   this.area = this.util.getItemToLocalStorage('area').toLowerCase();
+      //   this.getAllChemistList(this.city, this.area);
+      // } else {
+      //   this.chemistFind = false;
+      //   this.getGeoLocation();
+      // }
+      this.chemistFind = false;
+      this.getGeoLocation();
     }
 
   }
@@ -91,37 +96,104 @@ export class ChemistListComponent implements OnInit, AfterViewInit {
     if ("geolocation" in navigator) {
       // Get the user's current position
       navigator.geolocation.getCurrentPosition((position) => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
+        // const latitude = position.coords.latitude;
+        // const longitude = position.coords.longitude;
+        // this.position['lat'] = position.coords.latitude;
+        // this.position['lng'] = position.coords.longitude;
         // for delhi use 
-        // const latitude = '28.622339';
-        // const longitude = '77.022888';
+        this.position['lat'] = '28.623999';
+        this.position['lng'] = '77.03520';
 
         // Use Nominatim API for reverse geocoding
-        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${this.position.lat}&lon=${this.position.lng}&format=json`)
           .then(response => response.json())
           .then(data => {
             console.log(data);
-            // this.area = data.address?.town || data.address?.county || data.address?.village || data.address?.suburb;
-            // this.city = data.address?.city_district || data.address?.state_district || data.address?.region;
-            const displayNameArray = data.display_name.split(',');
+            this.area = data.address?.town || data.address?.county || data.address?.village || data.address?.suburb;
+            this.city = data.address?.city_district || data.address?.state_district || data.address?.region;
+            // const displayNameArray = data.display_name.split(',');
+            console.log(this.area)
+            console.log(this.city)
             // Get the second last value (city) from the array
             // this.city = displayNameArray[displayNameArray.length - 2].trim();
-            this.area = displayNameArray[0].trim().toLowerCase();
-            this.city = displayNameArray[1].trim().toLowerCase();
-            this.util.setItemToLocalStorage('city', this.city);
-            this.util.setItemToLocalStorage('area', this.area);
-            this.getAllChemistList(this.city, this.area);
+            // this.area = displayNameArray[0].trim().toLowerCase();
+            // this.city = displayNameArray[1].trim().toLowerCase();
+            // this.util.setItemToLocalStorage('city', this.city);
+            // this.util.setItemToLocalStorage('area', this.area);
+            this.getAllChemistList(this.city, this.position, this.area);
+            this.errorMessage = null;
+            this.errorMessageEnable = false;
           })
           .catch(error => {
             console.error('Error fetching address:', error);
+            this.errorMessage = 'Please enable location services and then click Ok button.';
+            this.errorMessageEnable = true;
           });
+      }, (err) => {
+        console.log(err)
+        this.errorMessage = 'Please enable location services.';
+        this.errorMessageEnable = true;
       });
     } else {
       alert("Geolocation is not supported in this browser.");
     }
     // Google Map Configuration
     // navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+  }
+
+  requestLocation() {
+    this.loadingService.setLoading(true);
+    navigator.geolocation.getCurrentPosition((position) => {
+        this.position['lat'] = position.coords.latitude;
+        this.position['lng'] = position.coords.longitude;
+
+        // Use Nominatim API for reverse geocoding
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${this.position.lat}&lon=${this.position.lng}&format=json`)
+        .then(response => response.json())
+        .then(data => {
+          this.errorMessageEnable = false;
+          console.log(data);
+          this.area = data.address?.town || data.address?.county || data.address?.village || data.address?.suburb;
+          this.city = data.address?.city_district || data.address?.state_district || data.address?.region;
+          this.getAllChemistList(this.city, this.position, this.area);
+          this.errorMessage = null;
+          this.errorMessageEnable = false;
+          this.loadingService.setLoading(false);
+        }).catch(error => {
+          console.error('Error getting location:', error);
+          this.loadingService.setLoading(false);
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              this.errorMessage = 'User denied the request for Geolocation. Please enable location services and then click Ok button.';
+              break;
+            case error.POSITION_UNAVAILABLE:
+              this.errorMessage = 'Location information is unavailable.';
+              break;
+            case error.TIMEOUT:
+              this.errorMessage = 'The request to get user location timed out.';
+              break;
+            case error.UNKNOWN_ERROR:
+              this.errorMessage = 'An unknown error occurred.';
+              break;
+          }
+            });
+    }, (error) => {
+      this.loadingService.setLoading(false);
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          this.errorMessage = 'User denied the request for Geolocation. Please enable location services and then click Ok button.';
+          break;
+        case error.POSITION_UNAVAILABLE:
+          this.errorMessage = 'Location information is unavailable.';
+          break;
+        case error.TIMEOUT:
+          this.errorMessage = 'The request to get user location timed out.';
+          break;
+          default: 
+          this.errorMessage = 'Please enable location services.';
+          break;
+      }
+    });
   }
 
   //    reverseGeocode(latitude: any, longitude: any, apiKey: any): void{
@@ -145,8 +217,8 @@ export class ChemistListComponent implements OnInit, AfterViewInit {
   //         });
   // }
 
-  getAllChemistList(city: string, area?: any): void {
-    this.doctorService.getAllChemistList(city, area).subscribe((res: any) => {
+  getAllChemistList(city: string, position: any, area?: any): void {
+    this.doctorService.getAllChemistList(city, position, area).subscribe((res: any) => {
       this.medicalLists = res.medicalLists;
       this.chemistFind = true;
       // this.messageService.add({ key: 'bc', severity: 'success', summary: 'Error', detail: 'Something went wrong' });
@@ -168,7 +240,7 @@ export class ChemistListComponent implements OnInit, AfterViewInit {
   searchClose(): void {
     this.search = false;
     this.searchLoader = false;
-    this.getAllChemistList(this.city, this.area);
+    this.getAllChemistList(this.city, this.position, this.area);
   }
 
   searchHappen(value: any) {

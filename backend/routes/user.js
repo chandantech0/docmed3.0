@@ -186,6 +186,8 @@ route.post('/api/chemist/signup', (req, res, next) => {
             pinCode: req.body.pinCode,
             city: req.body.city,
             area: req.body.area,
+            lat: req.body.lat,
+            lng: req.body.lng,
             isVerified: false,
             isActive: false,
             isBlock: false,

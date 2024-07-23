@@ -78,8 +78,8 @@ export class DoctorLayoutComponent implements OnInit {
     this.util.removeItemToLocalStorage('authToken');
     this.util.removeItemToLocalStorage('encChe');
     this.util.removeItemToLocalStorage('encOrder');
-    this.util.removeItemToLocalStorage('city');
-    this.util.removeItemToLocalStorage('area');
+    // this.util.removeItemToLocalStorage('city');
+    // this.util.removeItemToLocalStorage('area');
   }
 
 }

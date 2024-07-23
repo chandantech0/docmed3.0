@@ -27,7 +27,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row mt-3" *ngIf="signUpForm.get('userType')?.value === 'user'">
+                  <!-- <div class="row mt-3" *ngIf="signUpForm.get('userType')?.value === 'user'">
                     <div class="col-6 col-md-6 col-lg-6 col-xl-6">
                       <div class="flex align-items-center">
                         <p-radioButton value="simple_user" formControlName="userTypeSub" inputId="simple_user">
@@ -42,7 +42,7 @@
                         <label for="doctor" class="ml-2 radio-title font-14">Doctor</label>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                   <div class="field mt-5 mb-4">
                     <span class="p-float-label">
                       <input type="text" id="inputtext" pInputText formControlName="email" (input)="validateEmail($event)">
@@ -81,7 +81,6 @@
                   <div *ngIf="validationError" class="error-message f-12">{{ validationError }}</div>
                 </div>
                 <ng-container *ngIf="signUpForm.get('userType')?.value === 'chemist'">
-
 
                   <div class="field mb-4 mt-2">
                     <span class="p-float-label">
@@ -132,10 +131,34 @@
                       <label for="RegistrationDate">Registration Date</label>
                     </span>
                   </div>
+
+                  <div class="row">
+                    <!-- <div class="col-md-4">
+                      <div class="field mb-4 mt-2">
+                        <span class="p-float-label">
+                          <input type="text" id="address" pInputText formControlName="lat">
+                          <label for="RegistrationDate">Lat</label>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="field mb-4 mt-2">
+                        <span class="p-float-label">
+                          <input type="text" id="address" pInputText formControlName="lng">
+                          <label for="RegistrationDate">Long</label>
+                        </span>
+                      </div>
+                    </div> -->
+                    <div class="col-md-12">
+                      <div class="field mb-4 mt-2">
+                        <span class="p-float-label">
+                          <button pButton icon="pi-map-marker" iconPos="left" style="font-size: 12px; padding: 14px; width: 100%;" type="button" pRipple label="Get Location"  class="p-button-success"
+                          (click)="getGeoLocation()"></button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </ng-container>
-
-
-
 
                 <!-- <p class="small mb-5 pb-lg-2"><a class="" href="#!">Forgot password?</a></p> -->
                 <div class="text-center">
@@ -186,4 +209,17 @@
     </div>
   </div>
 </section>
+<p-dialog header="Header" [(visible)]="errorMessageEnable" [modal]="true" [closable]="false"
+    [style]="{ width: '40vw' }" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <h5>Important</h5>
+    </ng-template>
+        <div class=" p-3">
+          <h6> {{ errorMessage }}</h6>
+        </div>
+    <ng-template pTemplate="footer">
+        <button pButton type="button" label="Ok" class="p-button-success" (click)="getGeoLocation()"></button>
+    </ng-template>
+
+</p-dialog>
 <p-toast position="bottom-center" key="bc"></p-toast>

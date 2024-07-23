@@ -121,5 +121,19 @@
   </div>
 </ng-container>
 
+<p-dialog header="Header" [(visible)]="errorMessageEnable" [modal]="true" [closable]="false"
+    [style]="{ width: '40vw' }" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header">
+        <h5>Important</h5>
+    </ng-template>
+        <div class=" p-3">
+          <h6> {{ errorMessage }}</h6>
+        </div>
+    <ng-template pTemplate="footer">
+        <button pButton type="button" label="Ok" class="p-button-success" (click)="requestLocation()"></button>
+    </ng-template>
+
+</p-dialog>
+
 <p-toast position="bottom-center" key="bc"></p-toast>
 
