@@ -30,7 +30,7 @@ export class SelectloginComponent implements OnInit {
 
   login() {
     const data = {
-      email: this.userName,
+      email: this.userName.toLowerCase(),
       password: this.password
     }
     this.loadingService.setLoading(true);
@@ -78,7 +78,7 @@ export class SelectloginComponent implements OnInit {
 
     forgetPasswordSent() {
         const data = {
-          email: this.userName,
+          email: this.userName.toLowerCase(),
         }
         this.loadingService.setLoading(true);
           this.AuthAPIService.resetPassword(data).subscribe((res) => {

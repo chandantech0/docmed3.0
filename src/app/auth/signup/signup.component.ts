@@ -53,8 +53,8 @@ export class SignupComponent implements OnInit {
         city: [''],
         chemistName: [''],
         area: [''],
-        lat: ['', Validators.required],
-        lng: ['', Validators.required],
+        lat: [''],
+        lng: [''],
         // medicalLicense: [{ value: '', disabled: true }, Validators.required], // Optional field for doctors
       });
  
@@ -65,7 +65,7 @@ export class SignupComponent implements OnInit {
       this.emailForVerifiedAgain = params['emailForVerifiedAgain'] || null;
       this.userType = params['userType'] || null;
       if (this.emailForVerifiedAgain && this.userType) {
-        this.signUpForm.controls['email'].patchValue(this.emailForVerifiedAgain);
+        this.signUpForm.controls['email'].patchValue(this.emailForVerifiedAgain.toLowerCase());
         this.signUpForm.controls['userType'].patchValue(this.userType);
         this.signUpOtp();
         this.signUpOtpWindow = true;
@@ -77,7 +77,7 @@ export class SignupComponent implements OnInit {
   signUpOtp() {
     if (this.signUpForm.controls['userType'].value === 'user') {
       this.loadingService.setLoading(true);
-    this.AuthAPIService.signUpOtp(this.signUpForm.controls['email'].value).subscribe((res) => {
+    this.AuthAPIService.signUpOtp(this.signUpForm.controls['email'].value.toLowerCase()).subscribe((res) => {
       this.loadingService.setLoading(false);
       if (res.status === "Success") {
         this.messageService.add({ key: 'bc', severity: 'success', summary: 'success', detail: res.message });
@@ -92,7 +92,7 @@ export class SignupComponent implements OnInit {
   }
   else {
     this.loadingService.setLoading(true);
-    this.AuthAPIService.signUpOtpChemist(this.signUpForm.controls['email'].value).subscribe((res) => {
+    this.AuthAPIService.signUpOtpChemist(this.signUpForm.controls['email'].value.toLowerCase()).subscribe((res) => {
       this.loadingService.setLoading(false);
       if (res.status === "Success") {
         this.messageService.add({ key: 'bc', severity: 'success', summary: 'success', detail: res.message });
@@ -114,6 +114,7 @@ export class SignupComponent implements OnInit {
       this.messageService.add({ key: 'bc', severity: 'error', summary: 'Error', detail: 'Password does not match' });
       return;
      }
+     this.signUpForm.controls['email'].setValue(this.signUpForm.controls['email'].value.toLowerCase());
      this.signUpForm.controls['city'].setValue(this.signUpForm.controls['city'].value.toLowerCase());
      this.signUpForm.controls['area'].setValue(this.signUpForm.controls['area'].value.toLowerCase());
      if (this.signUpForm.controls['userType'].value === 'user') {
@@ -151,7 +152,7 @@ export class SignupComponent implements OnInit {
 
   submitOtp() {
     const obj = {
-      email: this.signUpForm.controls['email'].value,
+      email: this.signUpForm.controls['email'].value.toLowerCase(),
       enteredOtp: this.otp
     }
     if (this.signUpForm.controls['userType'].value === 'user') {
@@ -195,6 +196,8 @@ export class SignupComponent implements OnInit {
       this.signUpForm.get('Address')?.setValidators(Validators.required);
       this.signUpForm.get('chemistName')?.setValidators(Validators.required);
       this.signUpForm.get('area')?.setValidators(Validators.required);
+      this.signUpForm.get('lat')?.setValidators(Validators.required);
+      this.signUpForm.get('lng')?.setValidators(Validators.required);
 
       this.signUpForm.get('pinCode')?.updateValueAndValidity();
       this.signUpForm.get('LicenseNumber')?.updateValueAndValidity();
@@ -203,6 +206,8 @@ export class SignupComponent implements OnInit {
       this.signUpForm.get('Address')?.updateValueAndValidity();
       this.signUpForm.get('chemistName')?.updateValueAndValidity();
       this.signUpForm.get('area')?.updateValueAndValidity();
+      this.signUpForm.get('lat')?.updateValueAndValidity();
+      this.signUpForm.get('lng')?.updateValueAndValidity();
 
       this.signUpForm.controls['userTypeSub'].patchValue('');
     } else {
@@ -213,6 +218,8 @@ export class SignupComponent implements OnInit {
       this.signUpForm.get('Address')?.removeValidators(Validators.required);
       this.signUpForm.get('chemistName')?.removeValidators(Validators.required);
       this.signUpForm.get('area')?.removeValidators(Validators.required);
+      this.signUpForm.get('lat')?.removeValidators(Validators.required);
+      this.signUpForm.get('lng')?.removeValidators(Validators.required);
 
       this.signUpForm.get('pinCode')?.updateValueAndValidity();
       this.signUpForm.get('LicenseNumber')?.updateValueAndValidity();
@@ -221,6 +228,8 @@ export class SignupComponent implements OnInit {
       this.signUpForm.get('Address')?.updateValueAndValidity();
       this.signUpForm.get('chemistName')?.updateValueAndValidity();
       this.signUpForm.get('area')?.updateValueAndValidity();
+      this.signUpForm.get('lat')?.updateValueAndValidity();
+      this.signUpForm.get('lng')?.updateValueAndValidity();
      
     }
   }
