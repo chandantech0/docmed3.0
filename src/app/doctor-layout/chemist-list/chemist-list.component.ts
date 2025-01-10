@@ -98,11 +98,11 @@ export class ChemistListComponent implements OnInit, AfterViewInit {
       navigator.geolocation.getCurrentPosition((position) => {
         // const latitude = position.coords.latitude;
         // const longitude = position.coords.longitude;
-        // this.position['lat'] = position.coords.latitude;
-        // this.position['lng'] = position.coords.longitude;
+        this.position['lat'] = position.coords.latitude;
+        this.position['lng'] = position.coords.longitude;
         // for delhi use 
-        this.position['lat'] = '28.623999';
-        this.position['lng'] = '77.03520';
+        // this.position['lat'] = '28.623999';
+        // this.position['lng'] = '77.03520';
 
         // Use Nominatim API for reverse geocoding
         fetch(`https://nominatim.openstreetmap.org/reverse?lat=${this.position.lat}&lon=${this.position.lng}&format=json`)
@@ -120,9 +120,9 @@ export class ChemistListComponent implements OnInit, AfterViewInit {
             // this.city = displayNameArray[1].trim().toLowerCase();
             // this.util.setItemToLocalStorage('city', this.city);
             // this.util.setItemToLocalStorage('area', this.area);
+            this.errorMessageEnable = false;
             this.getAllChemistList(this.city, this.position, this.area);
             this.errorMessage = null;
-            this.errorMessageEnable = false;
           })
           .catch(error => {
             console.error('Error fetching address:', error);
