@@ -1,10 +1,23 @@
 <div class="find-loader" *ngIf="!chemistFind">
-  <div class="loader">Loading...</div>
-  <h3 class="text-white text-center">Searching Nearby <br> Chemists...</h3>
+  <div class="loader-wrapper">
+    <div class="radar">
+      <div class="pulse-circle circle1"></div>
+      <div class="pulse-circle circle2"></div>
+      <div class="pulse-circle circle3"></div>
+      <div class="scan-line"></div>
+
+      <!-- Store icons -->
+      <div class="store-icon" style="top: 30%; left: 60%;"></div>
+      <div class="store-icon" style="top: 70%; left: 40%;"></div>
+      <div class="store-icon" style="top: 45%; left: 30%;"></div>
+    </div>
+    <br>
+    <h6>Finding Nearby Stores...</h6>
+  </div>
 </div>
 
 <ng-container *ngIf="chemistFind">
-  <div class="set-sticky container-fluid bg-light">
+  <!-- <div class="set-sticky container-fluid bg-light">
     <div class="row" *ngIf="!search">
       <div class="col-9">
         <div class="medical-name">
@@ -33,10 +46,33 @@
         </div>
       </div>
     </div>
+  </div> -->
+
+  <div class="chemist-header set-sticky">
+    <div class="location-selector">
+      <i class="pi pi-map-marker"></i>
+      <span class="delivery-to">Delivery to</span>
+      <span class="location p-primary-text">{{area ? area.toUpperCase() : 'SELECT LOCATION'}}</span>
+      <i class="pi pi-chevron-down"></i>
+    </div>
+    <button class="search-btn" (click)="isSearch()">
+      <i class="pi pi-search"></i>
+    </button>
+  </div>
+
+  <!-- Search Bar (your original with styling updates) -->
+  <div class="search-container" *ngIf="search">
+    <div class="search-input">
+      <input [(ngModel)]="searchValue" (input)="searchHappen($event)" placeholder="Search Chemist..." type="text"
+        #search pInputText />
+    </div>
+    <button (click)="searchClose()" class="close-search-btn">
+      <i class="pi pi-times"></i>
+    </button>
   </div>
 
   <div class="container-fluid">
-    <div class="mt-4 chemist-list" *ngIf="!searchLoader">
+    <!-- <div class="mt-4 chemist-list" *ngIf="!searchLoader">
       <p-card *ngFor="let item of medicalLists" [routerLink]="['/doctor/medicine', item?.chemistSignUpId, item?._id]" >
         <img class="img-fluid w-100 img-radius" alt="Card"
         src="{{item?.image}}"
@@ -49,16 +85,92 @@
                 <small class="small p-primary-light">{{item?.address}}</small>
               </div>
             </div>
-            <!-- <div class="col-4">
+            <div class="col-4">
               <small class="small">Delivery in</small>
               <div class="small">with in 2 hr</div>
-            </div> -->
+            </div>
           </div>
         </div>
       </p-card>
+    </div> -->
+
+    <!-- Chemist List (redesigned to match screenshot) -->
+    <div class="chemist-list-container">
+      <div *ngIf="!searchLoader">
+
+        <div class="categories-section">
+          <h3>Shop by Category</h3>
+          <div class="categories-scroll">
+            <div class="category-card" *ngFor="let category of categories">
+              <div class="category-icon">
+                <i [class]="category.icon"></i>
+              </div>
+              <span class="category-name">{{category.name}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="chemist-card" *ngFor="let item of medicalLists"
+          [routerLink]="['/doctor/medicine', item?.chemistSignUpId, item?._id]">
+          <div class="chemist-image-container">
+            <img
+              [src]="item?.image || '../../../assets/img/courier-hands-disposable-gloves-hold-paper-bag-with-pills-bottle-medicines-drugs-thermometer-inside-pharmacist-give-purchase-customer-home-delivery-pharmacy-service_458444-212.jpeg'"
+              [alt]="item?.title" class="chemist-image">
+            <div class="rating-badge">
+              {{item.rating || '4.1'}}<span class="rating-plus">+</span>
+            </div>
+            <div class="offer-badge" *ngIf="item.offers">{{item.offers}}</div>
+          </div>
+
+          <div class="chemist-details">
+            <h3 class="chemist-name">{{item?.title}}</h3>
+            <div class="chemist-categories">
+              {{item.categories || 'Pharmacy, Healthcare, Medicines'}}
+            </div>
+            <div class="price-time">
+              <!-- <span class="delivery-price">{{item.deliveryPrice || '₹150'}} delivery</span>
+              <span class="delivery-time">{{item.deliveryTime || '28 min'}}</span> -->
+              {{item?.address}}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  
-    
+
+    <!-- <div class="chemist-grid" *ngIf="!searchLoader">
+      <div class="chemist-card" *ngFor="let item of medicalLists" 
+           [routerLink]="['/doctor/medicine', item?.chemistSignUpId, item?._id]">
+        <div class="card-header">
+          <img class="chemist-image" src="{{item?.image}}"
+          onerror="this.src='../../../assets/img/courier-hands-disposable-gloves-hold-paper-bag-with-pills-bottle-medicines-drugs-thermometer-inside-pharmacist-give-purchase-customer-home-delivery-pharmacy-service_458444-212.jpeg';" alt="Profile Photo">
+          <div class="chemist-tag">Verified</div>
+          <div class="offer-badge" *ngIf="item.offers">20% OFF</div>
+        </div>
+        
+        <div class="card-body">
+          <h3 class="chemist-name">{{item?.title}}</h3>
+          <div class="rating-container">
+            <div class="rating-badge">
+              <i class="pi pi-star"></i> 4.2
+            </div>
+            <div class="delivery-time">35 mins</div>
+          </div>
+          
+          <div class="chemist-info">
+            <span class="cuisine-type">Pharmacy • Healthcare</span>
+            <div class="location-info">
+              <i class="pi pi-map-marker"></i>
+              <span>{{item?.address}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+
+
+
+
     <div class="custom-skeleton" *ngIf="searchLoader">
       <div class="mt-4">
         <p-skeleton width="100%" height="150px"></p-skeleton>
@@ -108,8 +220,8 @@
         </div>
       </div>
     </div>
-  
-  </div> 
+
+  </div>
 </ng-container>
 
 <ng-container *ngIf="medicalLists?.length === 0">
@@ -117,23 +229,22 @@
     <div class="div-align-center">
       <img src="../../../assets/img/no-medical.jpg" alt="No Chemist" class="hw-100" />
       <h6>No Chemist Found In {{area}}</h6>
-      </div>
+    </div>
   </div>
 </ng-container>
 
-<p-dialog header="Header" [(visible)]="errorMessageEnable" [modal]="true" [closable]="false"
-    [style]="{ width: '40vw' }" [draggable]="false" [resizable]="false">
-    <ng-template pTemplate="header">
-        <h5>Important</h5>
-    </ng-template>
-        <div class=" p-3">
-          <h6> {{ errorMessage }}</h6>
-        </div>
-    <ng-template pTemplate="footer">
-        <button pButton type="button" label="Ok" class="p-button-success" (click)="requestLocation()"></button>
-    </ng-template>
+<p-dialog header="Header" [(visible)]="errorMessageEnable" [modal]="true" [closable]="false" [style]="{ width: '40vw' }"
+  [draggable]="false" [resizable]="false">
+  <ng-template pTemplate="header">
+    <h5>Important</h5>
+  </ng-template>
+  <div class=" p-3">
+    <h6> {{ errorMessage }}</h6>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton type="button" label="Ok" class="p-button-success" (click)="requestLocation()"></button>
+  </ng-template>
 
 </p-dialog>
 
 <p-toast position="bottom-center" key="bc"></p-toast>
-

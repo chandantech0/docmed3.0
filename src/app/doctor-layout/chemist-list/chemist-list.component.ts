@@ -41,6 +41,12 @@ export class ChemistListComponent implements OnInit, AfterViewInit {
   errorMessage: any;
   errorMessageEnable: boolean = false;
   position: any = {};
+  categories = [
+    { name: 'Wellness', icon: 'pi pi-heart' },
+    { name: 'Personal Care', icon: 'pi pi-user' },
+    { name: 'Devices', icon: 'pi pi-mobile' },
+    { name: 'Diabetes Care', icon: 'pi pi-bolt' }
+  ];
   constructor(
     private messageService: MessageService,
     private doctorService: DoctorModuleService,
